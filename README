@@ -1,3 +1,83 @@
+Step 1:
+
+sudo apt-get update
+
+Step 2:
+
+sudo apt install git build-essential yasm sudo libtool
+
+Step 3:
+
+git clone https://github.com/log0530/ckpool.git
+
+Step 4:
+
+cd ckpool
+
+Step 5:
+
+autoreconf -i
+
+Step 6:
+
+sudo  ./autogen.sh; sudo ./configure; sudo make
+
+Step 7:
+
+sudo make install
+
+Step 8:
+
+we will set up a notifier script, as required for ckpool
+
+sudo nano /usr/bin/notify.sh
+
+Copy paste this
+
+#!/bin/bash
+/usr/bin/notifier -s /opt
+ctrl+x then press y then enter
+
+Step 9:
+
+Start bitcoind again
+
+bitcoind -daemon -blocknotify=/usr/bin/notify.sh --prune=550 --dbcache=1000
+
+Step 10:
+
+Edit ckpool.conf to replace serverurl, nodeserver, trusted with "localhost:3336"
+
+it should look like this
+
+"serverurl" : [
+
+        "localhost:3333"
+],
+
+"nodeserver" : [
+
+        "localhost:3335"
+	
+],
+"trusted" : [
+
+        "localhost:3336"
+	
+]
+
+Edit upstream url too, with localhost:3336
+
+"upstream" : "localhost:3336"
+
+Make sure to edit btc address in the config file, to match yours :)
+
+Step 11:
+
+Time to turn on the pool
+
+sudo ckpool -L 
+
 CKPOOL + CKPROXY + libckpool by Con Kolivas
 Modified for microcurrencies.
 
